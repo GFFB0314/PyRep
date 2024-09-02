@@ -1,3 +1,4 @@
+#Additional functionalities
 from random import randint
 
 def generate(max_value):
