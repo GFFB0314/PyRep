@@ -8,8 +8,8 @@ def generate(max_value):
         try:
             count += 1
             choice = int(input(f"Guess a number between 1-{max_value}: "))
-            if choice == answ:
-                print("Your guess was right!")
+            if choice == answ:#since decision() isn't returning any value, it will always break the loop
+                print("Your guess was right!")#because when a function doesn't return a value it implicitely return 'None' which is consider as false.
                 if decision(count):
                     pass
                 else:
@@ -23,6 +23,7 @@ def generate(max_value):
 
 
 def decision(count):
+    #decision doesn't return any value
     if count <= 3:
         print("You won the game!")
     else:
