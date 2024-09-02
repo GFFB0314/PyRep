@@ -1,4 +1,5 @@
 #Additional functionalities
+#Still need to add some functionalities
 from random import randint
 
 def generate(max_value):
