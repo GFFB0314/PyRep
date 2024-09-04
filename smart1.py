@@ -1,37 +1,104 @@
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
+from sys import exit
 
 title = "SMARTRACK"
-
-
 class PDF(FPDF):
-    def __init__(self, **kwargs):
-        super(PDF, self).__init__(**kwargs)  # the child class 'PDF' is pass to the super class 'FPDF' as argument
-        # object.add_font(font_name, font_style, font_location, uni=True)
-        self.add_font("Blackadder ITC Regular", "", r"C:\Windows\Fonts\ITCBLKAD.ttf", uni="DEPRECATED")
-
     def header(self):
-        self.set_font("Times", "", 25)
-        self.set_draw_color(15, 20, 25)  # the range is from 0 to 255
-        self.set_text_color(134, 237, 235)
+        #place the image
+        self.image(r"C:\Users\LENOVO\Documents\CPY_SAVES\smart.jpg", 10, 2, 70)
+        #set the font of the title
+        self.set_font("Times", "", 35)
+        self.set_draw_color(15, 20, 25)
+        self.set_text_color(250, 50, 50)
+        #calculate the title width
         title_w = self.get_string_width(title)
-        doc_w = self.w
         self.set_line_width(2)
-        self.set_x((doc_w - title_w) / 2)
-        self.cell(title_w, 10, title, border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT, fill=1, align="C")
+        self.set_x((self.w - title_w) - 10)
+        self.cell(title_w, 10, title, border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT, fill=1, align="R")
+        #add a break line
         self.ln()
-        
-    #def table_vertical(self):
+
+    def table_vertical(self, data):
+        self.set_font("Helvetica", "", 12)
+        header_background_color = (200, 150, 150)
+
+        cell_padding = 2
+        self.ln(60)
+        for row in data:
+            for header, value in row.items():
+                self.set_fill_color(*header_background_color)
+                self.set_text_color(5, 4, 4)
+                self.cell(40, 10, header, border=1, align="C", fill=True, ln=0)
+
+                self.cell(0, 10, str(value), border=1, align="C", ln=1)
+            
+            self.ln(5)#adds extra spaces between dictionnaries
 
     def footer(self):
         self.set_y(-15)
         self.set_font("Times", "BI", 10)
         self.cell(0, 10, f"{self.page_no()} / {{nb}}", align="C")
 
+# Collect user input
+data = []
+while True:
+    try:
+        print("Enter the following details or type 'done' to finish: ")
+        object = input("Object: ")
+        if object.lower() == "done":
+            break
+        caste_type = input("Type de boitier: ")
+        serial_num = input("N° de serie: ")
+        imei = int(input("IMEI: "))
+        device_id = input("ID: ")
+        client_name = input("Nom du client: ")
+        vehi_type = input("Marque du vehicule: ")
+        immat = input("Immatriculation: ")
+        iccid = int(input("ICCID: "))
+        nom_tech = input("Nom du technicien: ")
+
+        data.append({
+            "Object": object,
+            "Caste_type": caste_type,
+            "N° de serie": serial_num,
+            "IMEI": imei,
+            "ID": device_id,
+            "Client_name": client_name,
+            "Vehi_type": vehi_type,
+            "IMMAT": immat,
+            "ICCID": iccid,
+            "Nom_tech": nom_tech
+        })
+    except ValueError:
+        exit("Enter valid data format!")
 
 pdf = PDF(orientation="P", unit="mm", format="A4")
 pdf.alias_nb_pages()
 pdf.add_page()
-pdf.set_font("Blackadder ITC Regular", "", 15)
-pdf.cell(0, 10, "I SHALL MAKE IT !!", border=1, align="C")
-pdf.output(r"C:\Users\LENOVO\Documents\CPY_SAVES\part8.pdf")
+
+# Generate the table in the PDF
+pdf.table_vertical(data)
+
+location = r"C:\Users\LENOVO\Documents\CPY_SAVES\part8.pdf"
+pdf.output(location)
+print(f"PDF was created and saved in {location}")
+
+
+
+
+# def header(self):
+#     # Place the image on the left side and increase its size
+#     self.image(r"C:\Users\LENOVO\Documents\CPY_SAVES\smart.jpg", x=10, y=2, w=60, h=60)  # Image on the left side
+
+#     # Set the font for the title
+#     self.set_font("Times", "", 35)
+#     self.set_draw_color(15, 20, 25)
+#     self.set_text_color(250, 50, 50)
+
+#     # Calculate title width and align it to the right side
+#     title_w = self.get_string_width(title)
+#     self.set_line_width(2)
+#     self.set_x(self.w - title_w - 10)  # Align title to the right side with some padding
+#     self.cell(title_w, 10, title, border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT, fill=1, align="R")
+#     self.ln()
