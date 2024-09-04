@@ -5,7 +5,7 @@ from sys import exit
 title = "SMARTRACK"
 class PDF(FPDF):
     def header(self):
-        #place the image
+        #place the image'it is on the left side'
         self.image(r"C:\Users\LENOVO\Documents\CPY_SAVES\smart.jpg", 10, 2, 70)
         #set the font of the title
         self.set_font("Times", "", 35)
@@ -27,7 +27,7 @@ class PDF(FPDF):
         self.ln(60)
         for row in data:
             for header, value in row.items():
-                self.set_fill_color(*header_background_color)
+                self.set_fill_color(*header_background_color)#'*' is used to unpacked tuple or other data set
                 self.set_text_color(5, 4, 4)
                 self.cell(40, 10, header, border=1, align="C", fill=True, ln=0)
 
@@ -83,22 +83,3 @@ pdf.table_vertical(data)
 location = r"C:\Users\LENOVO\Documents\CPY_SAVES\part8.pdf"
 pdf.output(location)
 print(f"PDF was created and saved in {location}")
-
-
-
-
-# def header(self):
-#     # Place the image on the left side and increase its size
-#     self.image(r"C:\Users\LENOVO\Documents\CPY_SAVES\smart.jpg", x=10, y=2, w=60, h=60)  # Image on the left side
-
-#     # Set the font for the title
-#     self.set_font("Times", "", 35)
-#     self.set_draw_color(15, 20, 25)
-#     self.set_text_color(250, 50, 50)
-
-#     # Calculate title width and align it to the right side
-#     title_w = self.get_string_width(title)
-#     self.set_line_width(2)
-#     self.set_x(self.w - title_w - 10)  # Align title to the right side with some padding
-#     self.cell(title_w, 10, title, border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT, fill=1, align="R")
-#     self.ln()
